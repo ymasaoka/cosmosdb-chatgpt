@@ -161,6 +161,9 @@ resource openAiAccount 'Microsoft.CognitiveServices/accounts@2022-12-01' = {
 resource openAiModelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2022-12-01' = {
   parent: openAiAccount
   name: openAiSettings.model.deployment.name
+  sku: {
+    name: openAiSettings.sku
+  },
   properties: {
     model: {
       format: 'OpenAI'
