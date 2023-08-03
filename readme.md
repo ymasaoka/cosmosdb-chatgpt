@@ -56,7 +56,7 @@ azureDeploy: https://raw.githubusercontent.com/azure-samples/cosmosdb-chatgpt/ma
 
 Azure Cosmos DB と Open AI のすべての接続情報はゼロタッチであり、デプロイ時に Azure App Service インスタンスに環境変数として挿入されます。  
 
-[![Azure にデプロイ](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fymasaoka%2Fcosmosdb-chatgpt%2Fmain%2Fazuredeploy.bicep)
+[![Azure にデプロイ](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fymasaoka%2Fcosmosdb-chatgpt%2Fmain%2Fazuredeploy.json)
 
 ### クイックスタート
 
