@@ -13,66 +13,62 @@ azureDeploy: https://raw.githubusercontent.com/azure-samples/cosmosdb-chatgpt/ma
 
 # Azure Cosmos DB + OpenAI ChatGPT
 
-This sample application combines Azure Cosmos DB with OpenAI ChatGPT with a Blazor Server front-end for an intelligent chat bot application that shows off how you can build a 
-simple chat application with OpenAi ChatGPT and Azure Cosmos DB.
+このサンプルアプリケーションは、Azure Cosmos DB と Azure OpenAI ChatGPT、Blazor Server フロントエンドを組み合わせたインテリジェントなチャットボットアプリケーションで、Azure OpenAI ChatGPT と Azure Cosmos DB を使用してシンプルなチャットアプリケーションを構築する方法を示しています。  
 
 ![Cosmos DB + ChatGPT user interface](screenshot.png)
 
-## Features
+## 特徴
 
-This application has individual chat sessions which are displayed and can be selected in the left-hand nav. Clicking on a session will show the messages that contain
-human prompts and AI completions. 
+このアプリケーションには、左側のナビゲーションに表示および選択が可能な個別のチャットセッションがあります。セッションをクリックすると、人間によるプロンプトと AI completion を含むメッセージが表示されます。  
 
-When a new prompt is sent to the Azure OpenAI service, some of the conversation history is sent with it. This provides context allowing ChatGPT to respond 
-as though it is having a conversation. The length of this conversation history can be configured from appsettings.json 
-with the `OpenAiMaxTokens` value that is then translated to a maximum conversation string length that is 1/2 of this value. 
+新しいプロンプトが Azure OpenAI サービスに送信されると、会話履歴の一部が一緒に送信されます。これにより、ChatGPT が会話しているかのように応答できるコンテキストが提供されます。この会話履歴の長さは、appsettings.json から構成できます。  
+`OpenAiMaxTokens` 値を使用し、この値の 1/2 である会話文字列の最大長に変換されます。  
 
-Please note that the "gpt-35-turbo" model used by this sample has a maximum of 4096 tokens. Token are used in both the request and reponse from the service. Overriding the maxConversationLength to values approaching maximum token value could result in completions that contain little to no text if all of it has been used in the request.
+このサンプルで使用されている "gpt-35-turbo" モデルには最大 4096 個のトークンがあることに注意してください。トークンは、サービスからのリクエストとレスポンスの両方で使用されます。maxConversationLength を最大トークン値に近い値にオーバーライドすると、リクエストですべてが使用されている場合、テキストがほとんど含まれない、または、まったく含まれない completion になる可能性があります。  
 
-The history for all prompts and completions for each chat session is stored in Azure Cosmos DB. Deleting a chat session in the UI will delete it's corresponding data as well.
+各チャットセッションのすべてのプロンプトと completion の履歴は、Azure Cosmos DB に保存されます。UI でチャットセッションを削除すると、対応するデータも削除されます。  
 
-The application will also summarize the name of the chat session by asking ChatGPT to provide a one or two word summary of the first prompt. This allows you to easily
-identity different chat sessions.
+また、アプリケーションは ChatGPT に最初のプロンプトの 1 語または 2 語の要約を提供するよう依頼することで、チャット セッションの名前を要約します。これにより、さまざまなチャットセッションを簡単に識別できます。  
 
-Please note this is a sample application. It is intended to demonstrate how to use Azure Cosmos DB and Azure OpenAI ChatGPT together. It is not intended for production or other large scale use
+これはサンプルアプリケーションであることに注意してください。これは、Azure Cosmos DB と Azure OpenAI ChatGPT を一緒に使用する方法をデモンストレーションすることを目的としています。本番環境やその他の大規模な使用を目的としたものではありません。  
 
-## Getting Started
+## はじめましょう
 
-### Prerequisites
+### 前提条件
 
-- Azure Subscription
-- Subscription access to Azure OpenAI service. Start here to [Request Acces to Azure OpenAI Service](https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUOFA5Qk1UWDRBMjg0WFhPMkIzTzhKQ1dWNyQlQCN0PWcu)
-- Visual Studio, VS Code, or some editor if you want to edit or view the source for this sample.
+- Azure サブスクリプション  
+- Azure OpenAI Service を利用できること。ここから [Azure OpenAI Service へのアクセスをリクエスト](https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUOFA5Qk1UWDRBMjg0WFhPMkIzTzhKQ1dWNyQlQCN0PWcu) を開始してください  
+- このサンプルのソースを編集または表示する場合は、Visual Studio、VS Code、またはその他のエディター  
 
-### Installation
+### インストール
 
-1. Fork this repository to your own GitHub account.
-1. Depending on whether you deploy using the ARM Template or Bicep, modify this variable in one of those files to point to your fork of this repository, "webSiteRepository": "https://github.com/Azure-Samples/cosmosdb-chatgpt.git" 
-1. If using the Deploy to Azure button below, also modify this README.md file to change the path for the Deploy To Azure button to your local repository.
-1. If you deploy this application without making either of these changes, you can update the repository by disconnecting and connecting an external git repository pointing to your fork.
+1. このリポジトリを自分の GitHub アカウントにフォークします。  
+1. ARM テンプレートを使用してデプロイするか Bicep を使用してデプロイするかに応じて、これらのファイルのいずれかでこの変数を変更して、このリポジトリのフォークを指すようにします: "webSiteRepository": "https://github.com/ymasaoka/cosmosdb-chatgpt.git"   
+1. 以下の [Deploy to Azure] ボタンを使用する場合は、この README.md ファイルも変更して、[Azure にデプロイ] ボタンのパスをローカルリポジトリに変更します。  
+1. これらの変更を行わずにこのアプリケーションをデプロイする場合は、フォークを指す外部 git リポジトリを切断して接続することによって、リポジトリを更新できます。  
 
-The provided ARM or Bicep Template will provision the following resources:
-1. Azure Cosmos DB account with database and container at 400 RU/s. This can optionally be configured to run on the Cosmos DB free tier if available for your subscription.
-1. Azure App service. This will be configured for CI/CD to your forked GitHub repository. This service can also be configured to run on App Service free tier.
-1. Azure Open AI account. You must also specify a name for the deployment of the "text-davinci-003" model which is used by this application.
+提供された ARM または Bicep テンプレートは、次のリソースをプロビジョニングします:
+1. 1000 RU/秒のデータベースとコンテナーを備えた Azure Cosmos DB アカウント。これは、サブスクリプションで利用可能な場合は、Cosmos DB の無料枠で実行するようにオプションで構成できます。  
+1. Azure App Service。これは、フォークされた GitHub リポジトリへの CI/CD 用に構成されます。このサービスは、App Service の無料枠で実行するように構成することもできます。
+1. Azure Open AI アカウント。このアプリケーションで使用される "text-davinci-003" モデルのデプロイメントの名前も指定する必要があります。  
 
-Note: You must have access to Azure Open AI service from your subscription before attempting to deploy this application.
+注: このアプリケーションをデプロイする前に、サブスクリプションから Azure Open AI Service にアクセスできる必要があります。  
 
-All connection information for Azure Cosmos DB and Open AI is zero-touch and injected as environment variables in the Azure App Service instance at deployment time. 
+Azure Cosmos DB と Open AI のすべての接続情報はゼロタッチであり、デプロイ時に Azure App Service インスタンスに環境変数として挿入されます。  
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure-Samples%2Fcosmosdb-chatgpt%2Fmain%2Fazuredeploy.json)
+[![Azure にデプロイ](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fymasaoka%2Fcosmosdb-chatgpt%2Fmain%2Fazuredeploy.json)
 
-### Quickstart
+### クイックスタート
 
-1. After deployment, go to the resource group for your deployment and open the Azure App Service in the Azure Portal. Click the web url to launch the website.
-1. Click + New Chat to create a new chat session.
-1. Type your question in the text box and press Enter.
+1. デプロイ後、デプロイしたリソースグループに移動し、Azure Portal で Azure App Service を開きます。Web URL をクリックして Web サイトにアクセスします。  
+1. [+ 新しいチャット] をクリックし、新しいチャットセッションを作成します。  
+1. テキストボックスに質問を入力し、Enter キーを押します。
 
-## Clean up
+## クリーンナップ
 
-To remove all the resources used by this sample, you must first manually delete the deployed model within the Azure AI service. You can then delete the resource group for your deployment. This will delete all remaining resources.
+このサンプルで使用されているすべてのリソースを削除するには、まず Azure AI Service 内にデプロイされたモデルを手動で削除する必要があります。その後、デプロイに使用したリソースグループを削除します。これにより、残りのリソースがすべて削除されます。
 
-## Resources
+## リソース
 
 - [Azure Cosmos DB + Azure OpenAI ChatGPT Blog Post Announcement](https://devblogs.microsoft.com/cosmosdb/)
 - [Azure Cosmos DB Free Trial](https://aka.ms/TryCosmos)

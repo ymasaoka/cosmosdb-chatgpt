@@ -1,24 +1,25 @@
-@description('Location where all resources will be deployed. This value defaults to the **South Central US** region.')
+@description('すべてのリソースがデプロイされる場所です。この値のデフォルトは **東日本** リージョンです。')
 @allowed([
+  'Japan East'
   'South Central US'
   'East US'
   'France Central'
 ])
-param location string = 'South Central US'
+param location string = 'Japan East'
 
 @description('''
-Unique name for the chat application.  The name is required to be unique as it will be used as a prefix for the names of these resources:
+チャット アプリケーションの一意の名前です。  次のリソースの名前の接頭辞として使用されるため、名前は一意である必要があります:
 - Azure Cosmos DB
 - Azure App Service
 - Azure OpenAI
-The name defaults to a unique string generated from the resource group identifier.
+デフォルトの名前は、リソースグループ ID から生成される一意の文字列になります。
 ''')
 param name string = uniqueString(resourceGroup().id)
 
-@description('Boolean indicating whether Azure Cosmos DB free tier should be used for the account. This defaults to **true**.')
+@description('Azure Cosmos DB の無償枠をアカウントに適用するかどうかを示すブール値です。既定値は **true** です。')
 param cosmosDbEnableFreeTier bool = true
 
-@description('Specifies the SKU for the Azure App Service plan. Defaults to **F1**')
+@description('Azure App Service プランの SKU を指定します。既定値は **F1** です。')
 @allowed([
   'F1'
   'D1'
@@ -26,16 +27,16 @@ param cosmosDbEnableFreeTier bool = true
 ])
 param appServiceSku string = 'F1'
 
-@description('Specifies the SKU for the Azure OpenAI resource. Defaults to **S0**')
+@description('Azure OpenAI リソースの SKU を指定します。既定値は **S0** です。')
 @allowed([
   'S0'
 ])
 param openAiSku string = 'S0'
 
-@description('Git repository URL for the chat application. This defaults to the [`azure-samples/cosmosdb-chatgpt`](https://github.com/azure-samples/cosmosdb-chatgpt) repository.')
-param appGitRepository string = 'https://github.com/azure-samples/cosmosdb-chatgpt.git'
+@description('チャットアプリケーションの Git リポジトリの URL です。これは既定で [`ymasaoka/cosmosdb-chatgpt`](https://github.com/ymasaoka/cosmosdb-chatgpt) リポジトリになります。')
+param appGitRepository string = 'https://github.com/ymasaoka/cosmosdb-chatgpt.git'
 
-@description('Git repository branch for the chat application. This defaults to the [**main** branch of the `azure-samples/cosmosdb-chatgpt`](https://github.com/azure-samples/cosmosdb-chatgpt/tree/main) repository.')
+@description('チャットアプリケーションの Git リポジトリのブランチです。これは既定で [`ymasaoka/cosmosdb-chatgpt` リポジトリの **main** ブランチ](https://github.com/azure-samples/cosmosdb-chatgpt/tree/main) になります。')
 param appGetRepositoryBranch string = 'main'
 
 var openAiSettings = {
@@ -59,7 +60,7 @@ var cosmosDbSettings = {
   }
   container: {
     name: 'chatcontainer'
-    throughput: 400
+    throughput: 1000
   }
 }
 

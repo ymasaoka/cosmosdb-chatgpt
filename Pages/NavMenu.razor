@@ -35,7 +35,7 @@
                         <NavLink style="cursor:pointer" class="btn btn-sm mx-1 btn-secondary d-flex flex-row align-items start" Match="NavLinkMatch.All" @onclick="@(e => NewChat())">
                             <i class="bi bi-plus"></i>
                             <span class="flex-fill">
-                                Create New Chat
+                                新しいチャットを作成
                             </span>
                         </NavLink>
                     </div>
@@ -61,7 +61,7 @@
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <span class="badge bg-light me-2 user-select-none">
-                                            Tokens Used: @session.TokensUsed
+                                            使用済トークン数: @session.TokensUsed
                                         </span>
                                         <div class="btn-group" role="group">
                                             <button type="button" class="btn btn-sm btn-link text-light" @onclick="@(e => OpenInput(session.SessionId,session.Name))">
@@ -153,7 +153,7 @@
     {
         _deletePopUpOpen = true;
         _sessionId = id;
-        _popUpText = $"Do you want to delete the chat \"{title}\"?";
+        _popUpText = $"このチャットを本当に削除しますか？ \"{title}\"?";
     }
 
     public void UpdateNavMenuDisplay(string reason = "")

@@ -5,14 +5,14 @@ namespace Cosmos.Chat.GPT.Models;
 public record Session
 {
     /// <summary>
-    /// Unique identifier
+    /// 一意な識別子
     /// </summary>
     public string Id { get; set; }
 
     public string Type { get; set; }
 
     /// <summary>
-    /// Partition key
+    /// パーティションキー
     /// </summary>
     public string SessionId { get; set; }
 

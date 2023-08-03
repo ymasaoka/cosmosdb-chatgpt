@@ -5,7 +5,7 @@ using Cosmos.Chat.GPT.Models;
 namespace Cosmos.Chat.GPT.Services;
 
 /// <summary>
-/// Service to access Azure OpenAI.
+/// Azure OpenAI にアクセスするためのサービス
 /// </summary>
 public class OpenAiService
 {
@@ -13,27 +13,27 @@ public class OpenAiService
     private readonly OpenAIClient _client;
 
     /// <summary>
-    /// System prompt to send with user prompts to instruct the model for chat session
+    /// モデルにチャットセッションを指示するユーザープロンプトとともに送信するシステムプロンプト
     /// </summary>
     private readonly string _systemPrompt = @"
-        You are an AI assistant that helps people find information.
-        Provide concise answers that are polite and professional." + Environment.NewLine;
+        あなたは、人々が情報を見つけるのを助ける AI アシスタントです。
+        礼儀正しく、プロフェッショナルで簡潔な回答を提供してください。" + Environment.NewLine;
     
     /// <summary>    
-    /// System prompt to send with user prompts to instruct the model for summarization
+    /// モデルに要約を指示するユーザープロンプトとともに送信するシステムプロンプト
     /// </summary>
     private readonly string _summarizePrompt = @"
-        Summarize this prompt in one or two words to use as a label in a button on a web page" + Environment.NewLine;
+        次のプロンプトを 1 語または 2 語で要約し、Web ページ上のボタンのラベルとして使用します" + Environment.NewLine;
 
     /// <summary>
-    /// Creates a new instance of the service.
+    /// サービスの新しいインスタンスを作成します。
     /// </summary>
-    /// <param name="endpoint">Endpoint URI.</param>
-    /// <param name="key">Account key.</param>
-    /// <param name="modelName">Name of the deployed Azure OpenAI model.</param>
-    /// <exception cref="ArgumentNullException">Thrown when endpoint, key, or modelName is either null or empty.</exception>
+    /// <param name="endpoint">エンドポイント URI.</param>
+    /// <param name="key">アカウントキー</param>
+    /// <param name="modelName">デプロイされた Azure OpenAI モデルの名前</param>
+    /// <exception cref="ArgumentNullException">エンドポイント、キー、またはモデル名が null または空の場合にスローされます。</exception>
     /// <remarks>
-    /// This constructor will validate credentials and create a HTTP client instance.
+    /// このコンストラクターは資格情報を検証し、HTTP クライアント インスタンスを作成します。
     /// </remarks>
     public OpenAiService(string endpoint, string key, string modelName)
     {
@@ -47,11 +47,11 @@ public class OpenAiService
     }
 
     /// <summary>
-    /// Sends a prompt to the deployed OpenAI LLM model and returns the response.
+    /// デプロイされた OpenAI LLM モデルにプロンプトを送信し、応答を返します。
     /// </summary>
-    /// <param name="sessionId">Chat session identifier for the current conversation.</param>
-    /// <param name="prompt">Prompt message to send to the deployment.</param>
-    /// <returns>Response from the OpenAI model along with tokens for the prompt and response.</returns>
+    /// <param name="sessionId">現在の会話のチャットのセッション ID</param>
+    /// <param name="prompt">デプロイされた OpenAI LLM モデルに送信するユーザープロンプト</param>
+    /// <returns>OpenAI モデルからの応答と、プロンプトと応答に使用したトークン数</returns>
     public async Task<(string response, int promptTokens, int responseTokens)> GetChatCompletionAsync(string sessionId, string userPrompt)
     {
         
@@ -87,11 +87,11 @@ public class OpenAiService
     }
 
     /// <summary>
-    /// Sends the existing conversation to the OpenAI model and returns a two word summary.
+    /// 既存の会話を OpenAI モデルに送信し、2 単語の要約を返します。
     /// </summary>
-    /// <param name="sessionId">Chat session identifier for the current conversation.</param>
-    /// <param name="conversation">Prompt conversation to send to the deployment.</param>
-    /// <returns>Summarization response from the OpenAI model deployment.</returns>
+    /// <param name="sessionId">現在の会話のチャットのセッション ID</param>
+    /// <param name="conversation">デプロイされた OpenAI LLM モデルに送信するユーザープロンプト</param>
+    /// <returns>デプロイされた OpenAI LLM モデルで作成された要約</returns>
     public async Task<string> SummarizeAsync(string sessionId, string userPrompt)
     {
         

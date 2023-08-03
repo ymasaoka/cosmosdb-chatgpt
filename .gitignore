@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# macOS auto generated files
+*.DS_Store
+
 # Environment-specific app settings
 appsettings.development.json
 appsettings.production.json

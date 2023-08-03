@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "value": "East US"
+            "value": "Japan East"
         },
         "cosmosDbEnableFreeTier": {
             "value": false
@@ -15,7 +15,7 @@
             "value": "S0"
         },
         "appGitRepository": {
-            "value": "https://github.com/azure-samples/cosmosdb-chatgpt.git"
+            "value": "https://github.com/ymasaoka/cosmosdb-chatgpt.git"
         },
         "appGetRepositoryBranch": {
             "value": "main"

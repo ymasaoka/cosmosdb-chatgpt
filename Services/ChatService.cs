@@ -6,7 +6,7 @@ namespace Cosmos.Chat.GPT.Services;
 public class ChatService
 {
     /// <summary>
-    /// All data is cached in the _sessions List object.
+    /// すべてのデータを _sessions リストオブジェクトにキャッシュします。
     /// </summary>
     private static List<Session> _sessions = new();
 
@@ -23,7 +23,7 @@ public class ChatService
     }
 
     /// <summary>
-    /// Returns list of chat session ids and names for left-hand nav to bind to (display Name and ChatSessionId as hidden)
+    /// 左側のナビゲーションにバインドするチャットセッション ID と名前のリストを返します (名前を表示し ChatSessionId は非表示)。
     /// </summary>
     public async Task<List<Session>> GetAllChatSessionsAsync()
     {
@@ -31,7 +31,7 @@ public class ChatService
     }
 
     /// <summary>
-    /// Returns the chat messages to display on the main web page when the user selects a chat from the left-hand nav
+    /// ユーザーが左側のナビゲーションからチャットを選択したときに、メイン部分の Web ページに表示するチャットメッセージを返します。
     /// </summary>
     public async Task<List<Message>> GetChatSessionMessagesAsync(string? sessionId)
     {
@@ -48,15 +48,15 @@ public class ChatService
 
         if (_sessions[index].Messages.Count == 0)
         {
-            // Messages are not cached, go read from database
+            // メッセージはキャッシュされず、データベースから読み取り
             chatMessages = await _cosmosDbService.GetSessionMessagesAsync(sessionId);
 
-            // Cache results
+            // 結果をキャッシュ
             _sessions[index].Messages = chatMessages;
         }
         else
         {
-            // Load from cache
+            // キャッシュからロード
             chatMessages = _sessions[index].Messages;
         }
 
@@ -64,7 +64,7 @@ public class ChatService
     }
 
     /// <summary>
-    /// User creates a new Chat Session.
+    /// ユーザーが新しいチャットセッションを作成します。
     /// </summary>
     public async Task CreateNewChatSessionAsync()
     {
@@ -77,7 +77,7 @@ public class ChatService
     }
 
     /// <summary>
-    /// Rename the Chat Ssssion from "New Chat" to the summary provided by OpenAI
+    /// チャットのセッションの名前を「新しいチャット」から OpenAI が提供する概要に変更します。
     /// </summary>
     public async Task RenameChatSessionAsync(string? sessionId, string newChatSessionName)
     {
@@ -91,7 +91,7 @@ public class ChatService
     }
 
     /// <summary>
-    /// User deletes a chat session
+    /// ユーザーがチャットセッションを削除します。
     /// </summary>
     public async Task DeleteChatSessionAsync(string? sessionId)
     {
@@ -105,7 +105,7 @@ public class ChatService
     }
 
     /// <summary>
-    /// Get a completion from _openAiService
+    /// _openAiService から completion を取得します。
     /// </summary>
     public async Task<string> GetChatCompletionAsync(string? sessionId, string prompt)
     {
@@ -123,7 +123,7 @@ public class ChatService
     }
 
     /// <summary>
-    /// Get current conversation from newest to oldest up to max conversation tokens and add to the prompt
+    /// 設定している max conversion tokens の値まで、最新である現在の会話を基準に過去の会話を取得して、プロンプトに追加します。
     /// </summary>
     private string GetChatSessionConversation(string sessionId)
     {
@@ -136,8 +136,8 @@ public class ChatService
 
         List<Message> messages = _sessions[index].Messages;
 
-        //Start at the end of the list and work backwards
-        for(int i = messages.Count - 1; i >= 0; i--) 
+        // リストの最後から始めて逆方向に作業
+        for (int i = messages.Count - 1; i >= 0; i--) 
         {             
             tokensUsed += messages[i].Tokens is null ? 0 : messages[i].Tokens;
 
@@ -147,7 +147,7 @@ public class ChatService
             conversationBuilder.Add(messages[i].Text);
         }
 
-        //Invert the chat messages to put back into chronological order and output as string.        
+        // チャットメッセージを反転して時系列順に戻し、文字列として出力   
         string conversation = string.Join(Environment.NewLine, conversationBuilder.Reverse<string>());
 
         return conversation;
@@ -166,7 +166,7 @@ public class ChatService
     }
 
     /// <summary>
-    /// Add user prompt to the chat session message list object and insert into the data service.
+    /// ユーザープロンプトをチャットセッションに紐づくメッセージリストのオブジェクトに追加し、CosmosDBService に挿入します。
     /// </summary>
     private async Task<Message> AddPromptMessageAsync(string sessionId, string promptText)
     {
@@ -180,24 +180,24 @@ public class ChatService
     }
 
     /// <summary>
-    /// Add user prompt and AI assistance response to the chat session message list object and insert into the data service as a transaction.
+    /// ユーザープロンプトと AI アシスタントの応答をチャットのセッションに紐づくメッセージリストのオブジェクトに追加し、トランザクションとして CosmosDBService に挿入します。
     /// </summary>
     private async Task AddPromptCompletionMessagesAsync(string sessionId, int promptTokens, int completionTokens, Message promptMessage, string completionText)
     {
 
         int index = _sessions.FindIndex(s => s.SessionId == sessionId);
-        
-        //Create completion message, add to the cache
+
+        // completion メッセージを作成し、キャッシュに追加
         Message completionMessage = new(sessionId, nameof(Participants.Assistant), completionTokens, completionText);
         _sessions[index].AddMessage(completionMessage);
 
-        
-        //Update prompt message with tokens used and insert into the cache
+
+        // 使用済トークン数とプロンプトメッセージを更新し、キャッシュに挿入
         Message updatedPromptMessage = promptMessage with { Tokens = promptTokens };
         _sessions[index].UpdateMessage(updatedPromptMessage);
 
 
-        //Update session with tokens users and udate the cache
+        // ユーザートークンとセッションを更新し、キャッシュを更新
         _sessions[index].TokensUsed += updatedPromptMessage.Tokens;
         _sessions[index].TokensUsed += completionMessage.Tokens;
 

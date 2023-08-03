@@ -43,7 +43,7 @@
                     Loading...
                 </div>
                 <p class="text-nowrap mb-0 fst-italic">
-                    Please wait while your chat loads.
+                    チャット履歴読み込み中です...
                 </p>
             </div>
         }
@@ -52,10 +52,10 @@
             <div class="alert alert-warning">                
                 <h4 class="alert-heading">
                     <i class="bi bi-exclamation-triangle-fill me-1" aria-hidden="true"></i>
-                    No Chats Available
+                    利用可能なチャットはありません
                 </h4>
                 <p class="text-nowrap mb-0 fst-italic">
-                    Use the New Chat option to start a new chat.
+                    新しいチャットを開始するには、[新しいチャットを作成] を使用します。
                 </p>
             </div>
         }
@@ -71,7 +71,7 @@
                         Loading...
                     </div>
                     <p class="text-nowrap mb-0 fst-italic">
-                        Please wait while your chat loads.
+                        チャット履歴読み込み中です...
                     </p>
                 </div>
             }
@@ -82,10 +82,11 @@
                     <div class="alert alert-info">                
                         <h4 class="alert-heading">
                             <i class="bi bi-lightbulb-fill me-1" aria-hidden="true"></i>
-                            Get Started
+                            新しいチャットへようこそ
                         </h4>
                         <p class="text-nowrap mb-0 fst-italic">
-                            Start chatting with your helpful AI assistant.
+                            便利な AI アシスタントとチャットを始めましょう。
+                            Shift + Enter でチャットを送信できます。
                         </p>
                     </div>
                 }
@@ -139,7 +140,7 @@
         {
             <div class="input-group">
                 <i class="bi bi-body-text input-group-text" aria-hidden="true"></i>
-                <input class="form-control form-control-sm" type="text" @bind="@UserPromptSet" @onkeydown="@Enter" @oninput="@((e) => { UserPrompt=e.Value?.ToString();})" rows="1" placeholder="<Your Message>"></input>
+                <input class="form-control form-control-sm" type="text" @bind="@UserPromptSet" @onkeydown="@Enter" @oninput="@((e) => { UserPrompt=e.Value?.ToString();})" rows="1" placeholder="ここにメッセージを入力します"></input>
                 <button type="button" class="btn btn-outline-secondary" @onclick="SubmitPromptAsync">
                     <i class="bi bi-send-fill" aria-hidden="true"></i>
                 </button>
@@ -220,7 +221,7 @@
 
     public async Task Enter(KeyboardEventArgs e)
     {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        if (e.ShiftKey && (e.Code == "Enter" || e.Code == "NumpadEnter"))
         {
             await SubmitPromptAsync();
         }

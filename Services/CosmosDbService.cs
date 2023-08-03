@@ -5,22 +5,22 @@ using Microsoft.Azure.Cosmos.Fluent;
 namespace Cosmos.Chat.GPT.Services;
 
 /// <summary>
-/// Service to access Azure Cosmos DB for NoSQL.
+/// Azure Cosmos DB for NoSQL にアクセスするためのサービス
 /// </summary>
 public class CosmosDbService
 {
     private readonly Container _container;
 
     /// <summary>
-    /// Creates a new instance of the service.
+    /// サービスの新しいインスタンスを作成します。
     /// </summary>
-    /// <param name="endpoint">Endpoint URI.</param>
-    /// <param name="key">Account key.</param>
-    /// <param name="databaseName">Name of the database to access.</param>
-    /// <param name="containerName">Name of the container to access.</param>
-    /// <exception cref="ArgumentNullException">Thrown when endpoint, key, databaseName, or containerName is either null or empty.</exception>
+    /// <param name="endpoint">エンドポイントの URI</param>
+    /// <param name="key">アカウントのキー</param>
+    /// <param name="databaseName">アクセスするデータベース名</param>
+    /// <param name="containerName">アクセスするコンテナー名</param>
+    /// <exception cref="ArgumentNullException">エンドポイント、キー、データベース名、またはコンテナー名が null または空の場合、スローされます。</exception>
     /// <remarks>
-    /// This constructor will validate credentials and create a service client instance.
+    /// このコンストラクターは資格情報を検証し、サービスのクライアントのインスタンスを作成します。
     /// </remarks>
     public CosmosDbService(string endpoint, string key, string databaseName, string containerName)
     {
@@ -46,10 +46,10 @@ public class CosmosDbService
     }
 
     /// <summary>
-    /// Creates a new chat session.
+    /// 新しいチャットセッションのアイテムを作成します。
     /// </summary>
-    /// <param name="session">Chat session item to create.</param>
-    /// <returns>Newly created chat session item.</returns>
+    /// <param name="session">作成するチャットのセッションのアイテム</param>
+    /// <returns>新しく作成されたチャットのセッションのアイテム</returns>
     public async Task<Session> InsertSessionAsync(Session session)
     {
         PartitionKey partitionKey = new(session.SessionId);
@@ -60,10 +60,10 @@ public class CosmosDbService
     }
 
     /// <summary>
-    /// Creates a new chat message.
+    /// 新しいチャットのメッセージのアイテムを作成します。
     /// </summary>
-    /// <param name="message">Chat message item to create.</param>
-    /// <returns>Newly created chat message item.</returns>
+    /// <param name="message">作成するチャットのメッセージのアイテム</param>
+    /// <returns>新しく作成されたチャットのメッセージのアイテム</returns>
     public async Task<Message> InsertMessageAsync(Message message)
     {
         PartitionKey partitionKey = new(message.SessionId);
@@ -75,9 +75,9 @@ public class CosmosDbService
     }
 
     /// <summary>
-    /// Gets a list of all current chat sessions.
+    /// 現時点におけるすべてのチャットセッションの一覧を取得します。
     /// </summary>
-    /// <returns>List of distinct chat session items.</returns>
+    /// <returns>それぞれのチャットセッションのアイテム一覧</returns>
     public async Task<List<Session>> GetSessionsAsync()
     {
         QueryDefinition query = new QueryDefinition("SELECT DISTINCT * FROM c WHERE c.type = @type")
@@ -95,10 +95,10 @@ public class CosmosDbService
     }
 
     /// <summary>
-    /// Gets a list of all current chat messages for a specified session identifier.
+    /// 指定されたセッション ID に紐づく現時点の全チャットのメッセージ一覧を取得します。
     /// </summary>
-    /// <param name="sessionId">Chat session identifier used to filter messsages.</param>
-    /// <returns>List of chat message items for the specified session.</returns>
+    /// <param name="sessionId">メッセージのフィルターに使用するチャットセッション ID</param>
+    /// <returns>指定されたチャットセッションのメッセージのアイテム一覧</returns>
     public async Task<List<Message>> GetSessionMessagesAsync(string sessionId)
     {
         QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type")
@@ -117,10 +117,10 @@ public class CosmosDbService
     }
 
     /// <summary>
-    /// Updates an existing chat session.
+    /// 既存のチャットセッションを更新します。
     /// </summary>
-    /// <param name="session">Chat session item to update.</param>
-    /// <returns>Revised created chat session item.</returns>
+    /// <param name="session">更新するチャットセッションのアイテム</param>
+    /// <returns>修正した作成済みチャットセッションのアイテム</returns>
     public async Task<Session> UpdateSessionAsync(Session session)
     {
         PartitionKey partitionKey = new(session.SessionId);
@@ -132,9 +132,9 @@ public class CosmosDbService
     }
 
     /// <summary>
-    /// Batch create or update chat messages and session.
+    /// チャットメッセージとセッションをバッチで作成または更新します。
     /// </summary>
-    /// <param name="messages">Chat message and session items to create or replace.</param>
+    /// <param name="messages">作成または置換するチャットメッセージおよびセッションのアイテム</param>
     public async Task UpsertSessionBatchAsync(params dynamic[] messages)
     {
         if (messages.Select(m => m.SessionId).Distinct().Count() > 1)
@@ -154,9 +154,9 @@ public class CosmosDbService
     }
 
     /// <summary>
-    /// Batch deletes an existing chat session and all related messages.
+    /// 既存のチャットセッションとすべての関連メッセージを一括削除します。
     /// </summary>
-    /// <param name="sessionId">Chat session identifier used to flag messages and sessions for deletion.</param>
+    /// <param name="sessionId">メッセージとセッションに削除のフラグを立てるために使用されるチャットセッション ID</param>
     public async Task DeleteSessionAndMessagesAsync(string sessionId)
     {
         PartitionKey partitionKey = new(sessionId);
