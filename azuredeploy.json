@@ -188,7 +188,7 @@
     },
     {
       "type": "Microsoft.CognitiveServices/accounts",
-      "apiVersion": "2022-12-01",
+      "apiVersion": "2023-05-01",
       "name": "[variables('openAiSettings').name]",
       "location": "[parameters('location')]",
       "sku": {
@@ -206,7 +206,7 @@
       "name": "[format('{0}/{1}', variables('openAiSettings').name, variables('openAiSettings').model.deployment.name)]",
       "sku": {
         "name": "[variables('openAiSettings').sku]"
-      }
+      },
       "properties": {
         "model": {
           "format": "OpenAI",
